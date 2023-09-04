@@ -8,6 +8,10 @@ use Mpdf\Mpdf;
 
 class PdfExportController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function exportToPDF(Request $request)
     {
         $projectName = $request->input('projectName');

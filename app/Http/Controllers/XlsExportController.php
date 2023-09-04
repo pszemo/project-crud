@@ -8,8 +8,13 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class XlsExportController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function exportToXLS(Request $request)
     {
+
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $headers = ['ID', 'Nazwa', 'Początek', 'Koniec', 'Opis']; // Replace with your column names
