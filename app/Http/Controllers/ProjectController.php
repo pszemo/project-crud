@@ -201,8 +201,9 @@ class ProjectController extends Controller
             ->get();
 
 
-
         // Return the filtered data to a view or perform further actions
-        return view('project.list', ['projects' => $projects]);
+        return view('project.list', ['projects' => $projects, 'queryString' => request()->getQueryString()]);
     }
+
+
 }

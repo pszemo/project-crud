@@ -6,13 +6,13 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
-        "dompdf/dompdf": "^2.0",
+        "ext-http": "*",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
-        "phpoffice/phpspreadsheet": "^1.29",
-      "ext-http": "*"
+        "mpdf/mpdf": "^8.2",
+        "phpoffice/phpspreadsheet": "^1.29"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",

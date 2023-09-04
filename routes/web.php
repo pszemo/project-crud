@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\PdfExportController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\XlsExportController;
 use App\Mail\MailableProject;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -40,3 +42,6 @@ Route::get('/project/delete/{id}',[ProjectController::class,'destroy'])->name('p
 Route::post('/project/send',[ProjectController::class,'send'])->name('project.send');
 Route::get('/project/list', [ProjectController::class,'index'])->name('project.list');
 Route::get('/project/filter', [ProjectController::class,'filter'])->name('project.filter');
+
+Route::get('/project/exportToPdf', [PdfExportController::class,'exportToPDF'])->name('project.export.pdf');
+Route::get('/project/exportToXls', [XlsExportController::class,'exportToXLS'])->name('project.export.xls');
