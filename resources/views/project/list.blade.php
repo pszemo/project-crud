@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <form id="filterForm">
+    <form id="filterForm" action="{{ route('project.filter') }}" method="GET">
         <div class="row">
             <div class="col-sm-3">
                 <div class="form-group">
@@ -15,7 +15,7 @@
             <div class="col-sm-3">
                 <div class="form-group">
                     <label for="startDateFrom">Początek projektu OD:</label>
-                    <input type="date" id="startDateFrom" name="startDate" class="form-control">
+                    <input type="date" id="startDateFrom" name="startDateFrom" class="form-control">
                 </div>
             </div>
             <div class="col-sm-3">
@@ -38,8 +38,6 @@
                 </div>
             </div>
         </div>
-
-
 
         <button type="submit" class="btn btn-primary">Filtruj:</button>
     </form>

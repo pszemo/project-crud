@@ -143,7 +143,6 @@ class ProjectController extends Controller
     {
 
 
-
         $email = $request->get('projectEmail');
         $projectToSend = $project->find($request->get('projectId'));
 
@@ -168,15 +167,42 @@ class ProjectController extends Controller
 
         return Response::json(array(
             'success' => true,
-            'data'   => 'udało się',
+            'data' => 'udało się',
         ));
     }
 
     public function filter(Request $request)
     {
 
-        if (!empty($request)) {
-            $projectName = $request->get('projectName');
-        }
+
+        $projectName = $request->input('projectName');
+        $projectStartFrom = $request->input('startDateFrom');
+        $projectStartTo = $request->input('startDateTo');
+        $projectEndFrom = $request->input('endDateFrom');
+        $projectEndTo = $request->input('endDateTo');
+
+
+        $projects = Project::query()
+            ->when($projectName, function ($query) use ($projectName) {
+                $query->where('projectName', 'like', "%$projectName%");
+            })
+            ->when($projectStartFrom, function ($query) use ($projectStartFrom) {
+                $query->where('projectStart', '>=', $projectStartFrom);
+            })
+            ->when($projectStartTo, function ($query) use ($projectStartTo) {
+                $query->where('projectStart', '<=', $projectStartTo);
+            })
+            ->when($projectEndFrom, function ($query) use ($projectEndFrom) {
+                $query->where('projectEnd', '>=', $projectEndFrom);
+            })
+            ->when($projectEndTo, function ($query) use ($projectEndTo) {
+                $query->where('projectEnd', '<=', $projectEndTo);
+            })
+            ->get();
+
+
+
+        // Return the filtered data to a view or perform further actions
+        return view('project.list', ['projects' => $projects]);
     }
 }

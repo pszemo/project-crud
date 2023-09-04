@@ -39,3 +39,4 @@ Route::post('/project/update', [ProjectController::class, 'update'])->name('proj
 Route::get('/project/delete/{id}',[ProjectController::class,'destroy'])->name('project.delete');
 Route::post('/project/send',[ProjectController::class,'send'])->name('project.send');
 Route::get('/project/list', [ProjectController::class,'index'])->name('project.list');
+Route::get('/project/filter', [ProjectController::class,'filter'])->name('project.filter');
