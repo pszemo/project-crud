@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Mail\Mailable;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
 use Symfony\Component\Mailer\Exception\TransportException;
 
@@ -136,10 +137,14 @@ class ProjectController extends Controller
      * Send project via email
      */
 
-    public function send(Request $request)
+    public function send(Project $project, Request $request)
     {
-        $email = $request->get('emailProject');
-        $projectToSend = Project::where('id', $request->get('idProject'))->get();
+
+
+
+        $email = $request->get('projectEmail');
+        $projectToSend = $project->find($request->get('projectId'));
+
         $html = '<h1>' . $projectToSend->projectName . '</h1>';
         $html .= '<p>początek:' . $projectToSend->projectStart . '</p>';
         $html .= '<p>koniec:' . $projectToSend->projectEnd . '</p>';
@@ -158,6 +163,10 @@ class ProjectController extends Controller
         } catch (TransportException $exception) {
             var_dump($exception);
         }
-        return redirect('/project/list');
+
+        return Response::json(array(
+            'success' => true,
+            'data'   => 'udało się',
+        ));
     }
 }

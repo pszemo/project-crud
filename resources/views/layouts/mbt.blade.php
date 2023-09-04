@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <title>MBT Media</title>
 
     <!-- Custom fonts for this template-->
@@ -178,7 +178,13 @@
 
 <!-- Custom scripts for all pages-->
 <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
-
+<script type="text/javascript">
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
 <script>
     $(document).on("click", ".openSendModal", function () {
         var myProjectId = $(this).data('id');
@@ -188,25 +194,30 @@
 </script>
 <script>
 
-        $("#sendEmailProject").click(function (e) {
 
-            console.log($("#emailProject").val())
+    $(document).ready(function () {
+        $('body').on('click', '#sendEmailProject', function (e) {
+
             e.preventDefault();
-
-            var _token = $("input[name='_token']").val();
-            var emailProject = $("#emailProject").val();
-            var idProject = $("#idProject").val();
-
-            console.log(emailProject + '::' + idProject);
             $.ajax({
+                type: "POST",
                 url: "{{ route('project.send') }}",
-                type: 'POST',
-                data: {_token: _token, emailProject: emailProject, idProject: idProject},
-                success: {}
+                data: {
+                    projectEmail: $('#projectEmail').val(),
+                    projectId:  $('#projectId').val(),
+                },
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (error) {
+                    console.error(error);
+                },
             });
+
+            // Close the modal after submission (optional)
+            $("#mailModal").modal("hide");
         });
-
-
+    });
 </script>
 </body>
 
