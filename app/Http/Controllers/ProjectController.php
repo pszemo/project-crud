@@ -10,8 +10,10 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Symfony\Component\Mailer\Exception\TransportException;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProjectController extends Controller
 {
@@ -23,8 +25,8 @@ class ProjectController extends Controller
     public function index()
     {
         //
-        $projects = Project::all();
-        return View::make('project.list')->with('projects', $projects);
+        $projects = Project::paginate(10);
+        return View::make('project.list',['projects' => $projects]);
     }
 
     /**
@@ -141,6 +143,10 @@ class ProjectController extends Controller
 
     public function send(Project $project, Request $request)
     {
+//check file
+        $filePathFromDatabase = Project::where('id', $request->get('projectId'))->value('projectFile');
+
+// Check if the file exists
 
 
         $email = $request->get('projectEmail');
@@ -159,7 +165,10 @@ class ProjectController extends Controller
                 ->to($email)
                 ->subject('test subject')
                 ->html($html);
-
+            if ($filePathFromDatabase && Storage::exists($filePathFromDatabase)) {
+                // The file exists
+                $mailable ->attach(Storage::path($filePathFromDatabase));
+            }
             $result = Mail::send($mailable);
         } catch (TransportException $exception) {
             var_dump($exception);
@@ -198,7 +207,7 @@ class ProjectController extends Controller
             ->when($projectEndTo, function ($query) use ($projectEndTo) {
                 $query->where('projectEnd', '<=', $projectEndTo);
             })
-            ->get();
+            ->paginate(10);
 
 
         // Return the filtered data to a view or perform further actions

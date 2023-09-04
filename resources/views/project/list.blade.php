@@ -65,6 +65,7 @@
             @endif
         </div>
     </div>
+
     @isset($projects)
         <table class="table">
             <thead>
@@ -77,6 +78,7 @@
             </tr>
             </thead>
             <tbody>
+            <tr><td colspan="6">
             @foreach ($projects as $project)
                 <tr>
                     <td>{{ $project['projectName'] }}</td>
@@ -91,7 +93,9 @@
                     <td><a href="/project/delete/{{ $project['id'] }}">Usuń</a></td>
                 </tr>
             @endforeach
+            <tr><td colspan="7"><div>{{$projects->links()}}</div> </td></tr>
             @endisset
+
             @empty($projects)
                 <tr>
                     <td>brak danych</td>
