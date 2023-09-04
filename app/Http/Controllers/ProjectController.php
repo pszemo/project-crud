@@ -93,7 +93,8 @@ class ProjectController extends Controller
         $projectItem = Project::where('id', $id)->get();
 
         return View::make('project.edit')->with([
-            'project' => $projectItem]);
+            'project' => $projectItem
+        ]);
     }
 
     /**
@@ -112,7 +113,8 @@ class ProjectController extends Controller
                 'projectStart' => 'required',
                 'projectEnd' => 'required',
                 'projectFile' => 'file|mimes:jpg,png,pdf|max:2048',
-            ], $request->all())]);
+            ], $request->all())
+        ]);
 
         $projectToUpdate->update($request->all());
 
@@ -168,5 +170,13 @@ class ProjectController extends Controller
             'success' => true,
             'data'   => 'udało się',
         ));
+    }
+
+    public function filter(Request $request)
+    {
+
+        if (!empty($request)) {
+            $projectName = $request->get('projectName');
+        }
     }
 }
